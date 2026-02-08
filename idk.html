@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Serás mi San Valentín? 💗</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .hearts-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .heart-float {
+      position: absolute;
+      font-size: 1.2rem;
+      opacity: 0.7;
+      animation: float 12s linear infinite;
+      color: rgba(255,255,255,0.8);
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-20vh) rotate(360deg); }
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 50px 35px;
+      max-width: 420px;
+      margin: 20px;
+      box-shadow: 0 20px 50px rgba(255,105,180,0.4);
+      border: 1px solid rgba(255,255,255,0.3);
+      animation: appear 1.2s ease-out;
+    }
+    @keyframes appear {
+      from { opacity:0; transform: scale(0.8); }
+      to { opacity:1; transform: scale(1); }
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.2rem;
+      color: #fff;
+      text-shadow: 0 4px 15px rgba(233,30,99,0.6);
+      margin-bottom: 15px;
+    }
+    .photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #ffb6c1;
+      box-shadow: 0 10px 30px rgba(255,182,193,0.6);
+      margin: 20px auto 30px;
+      display: block;
+    }
+    .subtitle {
+      font-size: 1.4rem;
+      margin: 20px 0 30px;
+      opacity: 0.95;
+    }
+    .name {
+      font-weight: 700;
+      color: #ffcccb;
+    }
+    .question {
+      font-size: 2.1rem;
+      margin: 30px 0 40px;
+      font-weight: 600;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .autoplay-msg {
+      font-size: 1rem;
+      margin: 10px 0 20px;
+      color: #fff9;
+      opacity: 0.8;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      min-height: 140px;
+      align-items: center;
+      position: relative;
+    }
+    button {
+      font-size: 1.5rem;
+      padding: 18px 55px;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      font-weight: 600;
+    }
+    .yes {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      color: white;
+    }
+    .no {
+      background: linear-gradient(45deg, #a1c4fd, #c2e9fb);
+      color: #333;
+      font-size: 1.5rem;
+      padding: 18px 55px;
+      min-width: 160px;
+      transform-origin: center;
+    }
+    button:hover {
+      transform: translateY(-5px) scale(1.08);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+
+    .message {
+      margin-top: 40px;
+      font-size: 1.7rem;
+      font-weight: 600;
+      min-height: 120px;
+      opacity: 0;
+      transition: opacity 0.8s;
+    }
+    .visible { opacity: 1; }
+
+    .confetti {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .confetti-heart {
+      position: absolute;
+      font-size: 2rem;
+      animation: confetti-fall 4s linear forwards;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity:1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <div class="container">
+    <h1>¡Holaaa! 💕</h1>
+    
+    <img src="https://i.imgur.com/c3qEJIo.jpeg" alt="Foto especial" class="photo">
+
+    <p class="subtitle">Querida <span class="name">NOMBRE_AQUÍ</span>,</p>
+    <p class="question">¿Quieres ser mi San Valentín este año? 🥺❤️</p>
+
+    <div class="autoplay-msg">Toca la pantalla para activar la música 💕</div>
+
+    <div class="buttons">
+      <button class="yes" onclick="yesClick()">SÍ, obvio 😍💖</button>
+      <button class="no" id="noBtn" onclick="noClick()">No... 😔</button>
+    </div>
+
+    <div class="message" id="mensaje"></div>
+  </div>
+
+  <audio id="musicaRomantica" autoplay loop muted preload="auto">
+    <source src="https://files.catbox.moe/17csx1.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const audio = document.getElementById('musicaRomantica');
+    let audioUnlocked = false;
+
+    // Al primer toque en la página → activa sonido
+    document.addEventListener('touchstart', function unlockAudio() {
+      if (!audioUnlocked) {
+        audio.muted = false;
+        audio.volume = 1.0;
+        audio.play().catch(() => {});
+        audioUnlocked = true;
+        // Puedes ocultar el mensaje si quieres:
+        // document.querySelector('.autoplay-msg').style.display = 'none';
+      }
+    }, { once: true });
+
+    // Corazones flotando
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart-float';
+      heart.innerHTML = ['❤️','💗','💞','💓','💘'][Math.floor(Math.random()*5)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (8 + Math.random() * 8) + 's';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      document.getElementById('heartsBg').appendChild(heart);
+      setTimeout(() => heart.remove(), 20000);
+    }
+    setInterval(createFloatingHeart, 800);
+
+    // Confeti
+    function launchConfetti() {
+      for (let i = 0; i < 80; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-heart';
+        c.innerHTML = ['❤️','💖','💕','✨','💝'][Math.floor(Math.random()*5)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+        c.style.animationDelay = Math.random() * 0.8 + 's';
+        document.getElementById('confetti').appendChild(c);
+        setTimeout(() => c.remove(), 6000);
+      }
+    }
+
+    const noMessages = [
+      "Ay... ¿segura? 🥺",
+      "¿De verdad no? Me pones triste... 😢",
+      "Pero si hacemos buena pareja... 💔",
+      "Piensa un poquito más... porfaaa 🙏",
+      "Me estás rompiendo el corazoncito... 🥹",
+      "Última oportunidad... ¿sí? 🥺❤️",
+      "Ya casi no lo veo... pero sigo intentando 😭",
+      "Bueno... creo que perdí 💔😔"
+    ];
+
+    let noCount = 0;
+    const noBtn = document.getElementById('noBtn');
+    const mensaje = document.getElementById('mensaje');
+
+    function noClick() {
+      noCount++;
+
+      let scale = 1 - (noCount * 0.18);
+      if (noCount >= 5) scale -= 0.1;
+      if (noCount >= 7) scale = Math.max(scale, 0.15);
+
+      noBtn.style.transform = `scale(${scale})`;
+      noBtn.style.opacity = Math.max(1 - (noCount * 0.13), 0.25);
+
+      if (noCount >= 8) {
+        noBtn.style.opacity = '0.15';
+      }
+
+      if (noCount - 1 < noMessages.length) {
+        mensaje.innerHTML = noMessages[noCount - 1];
+      } else {
+        mensaje.innerHTML = "Ya casi desaparezco... ¿sigues diciendo no? 😞💔";
+      }
+      mensaje.classList.add('visible');
+    }
+
+    function yesClick() {
+      mensaje.innerHTML = '¡SÍIIII! Mi corazón está explotando de felicidad 💥❤️🥰';
+      mensaje.classList.add('visible');
+      launchConfetti();
+      document.body.style.background = 'linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)';
+
+      // Activa sonido si no se hizo antes
+      audio.muted = false;
+      audio.volume = 1.0;
+      audio.play().catch(() => {});
+
+      noBtn.style.opacity = '0.4';
+      noBtn.style.pointerEvents = 'none';
+    }
+  </script>
+
+</body>
+</html>
